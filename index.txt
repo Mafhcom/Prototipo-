@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Recipientes</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>📦 Gestión de Recipientes</h1>
+    </header>
+
+    <nav>
+        <button id="btnGestion" class="active"><span class="material-icons">settings</span> Gestión</button>
+        <button id="btnRegistro"><span class="material-icons">add_box</span> Registro</button>
+    </nav>
+
+    <main>
+        <div id="vistaGestion" class="vista-content active-vista">
+            <section id="gestion-clientes">
+                <h2><span class="material-icons">people</span> Gestión de Clientes</h2>
+                <form id="clienteForm">
+                    <label for="nuevoCliente">Añadir Nuevo Cliente:</label>
+                    <input type="text" id="nuevoCliente" placeholder="Nombre del Cliente" required>
+                    <button type="submit">Añadir Cliente</button>
+                </form>
+                <h3>Clientes Registrados:</h3>
+                <ul id="listaClientes"></ul>
+            </section>
+
+            <hr>
+
+            <section id="gestion-tipos-recipientes">
+                <h2><span class="material-icons">inventory_2</span> Tipos de Recipientes</h2>
+                <form id="tipoRecipienteForm">
+                    <label for="nuevoTipoRecipiente">Añadir Nuevo Tipo:</label>
+                    <input type="text" id="nuevoTipoRecipiente" placeholder="Ej: Taper, Bandeja, Bolsa" required>
+                    <button type="submit">Añadir Tipo</button>
+                </form>
+                <h3>Tipos Registrados:</h3>
+                <ul id="listaTiposRecipientes"></ul>
+            </section>
+
+            <hr>
+
+            <section id="gestion-colores">
+                <h2><span class="material-icons">palette</span> Gestión de Colores</h2>
+                <form id="colorForm">
+                    <label for="nuevoColorNombre">Nombre del Color:</label>
+                    <input type="text" id="nuevoColorNombre" placeholder="Ej: Azul, Rojo, Verde" required>
+                    <label for="nuevoColorValor">Código Hexadecimal:</label>
+                    <input type="text" id="nuevoColorValor" placeholder="#RRGGBB" required>
+                    <button type="submit">Añadir Color</button>
+                </form>
+                <h3>Colores Registrados:</h3>
+                <ul id="listaColores"></ul>
+            </section>
+
+            <hr>
+
+            <section id="gestion-backup">
+                <h2><span class="material-icons">backup</span> Copia de Seguridad</h2>
+                <button id="guardarBackup">💾 Guardar Copia</button>
+                
+                <input type="file" id="inputRestaurarBackup" accept=".json" style="display:none;">
+                
+                <button id="restaurarBackup">♻️ Restaurar Copia</button>
+            </section>
+        </div>
+
+        <div id="vistaRegistro" class="vista-content">
+            <section id="registro-form">
+                <h2><span class="material-icons">playlist_add</span> Registrar Nuevo Recipiente</h2>
+                <form id="registroForm">
+                    <label for="clienteSelect">Seleccione Cliente:</label>
+                    <select id="clienteSelect" required>
+                        <option value="" disabled selected>-- Seleccione un Cliente --</option>
+                    </select>
+
+                    <label for="tipoRecipienteSelect">Tipo de Recipiente:</label>
+                    <select id="tipoRecipienteSelect" required>
+                        <option value="" disabled selected>-- Seleccione un Tipo --</option>
+                    </select>
+
+                    <label>Seleccione Color:</label>
+                    <div id="colorRecipienteDiv"></div>
+
+                    <p><strong>Fecha de Entrada:</strong> Hoy (<span id="fechaActual"></span>)</p>
+                    <button type="submit">Guardar Registro</button>
+                </form>
+            </section>
+
+            <hr>
+
+            <section id="lista-registros">
+                <h2><span class="material-icons">list_alt</span> Recipientes Pendientes</h2>
+                <ul id="listaRecipientes"></ul>
+            </section>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
+

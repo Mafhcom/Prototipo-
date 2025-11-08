@@ -1,0 +1,258 @@
+/* --- VARIABLES DE COLOR --- */
+:root {
+    --color-primario: #3b82f6;
+    --color-secundario: #10b981;
+    --color-terciario: #f59e0b;
+    --color-fondo: #f9fafb;
+    --color-tarjeta: #ffffff;
+    --color-texto: #1f2937;
+    --color-borde: #e5e7eb;
+    --color-atencion: #ef4444; /* rojo base para botones de eliminar */
+}
+
+/* --- ESTILOS GENERALES --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-fondo);
+    color: var(--color-texto);
+    line-height: 1.5;
+    font-size: 16px;
+}
+
+/* --- HEADER --- */
+header {
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+    color: white;
+    padding: 25px 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+header h1 {
+    margin: 0;
+    font-size: 2em;
+    font-weight: 700;
+}
+
+/* --- NAVEGACIÓN --- */
+nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    background-color: var(--color-tarjeta);
+    margin: -12px auto 20px auto;
+    padding: 10px 0;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+nav button {
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    margin: 5px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+}
+nav button.active {
+    background: linear-gradient(135deg, var(--color-secundario), var(--color-terciario));
+}
+nav button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+}
+
+/* --- VISTAS Y SECCIONES --- */
+.vista-content { display: none; }
+.vista-content.active-vista { display: block; }
+
+main {
+    padding: 15px;
+    max-width: 100%;
+}
+
+/* --- SECCIONES TIPO CARD --- */
+section {
+    background: var(--color-tarjeta);
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+    border-left: 8px solid var(--color-primario);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+section:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+/* --- ENCABEZADOS --- */
+section h2 {
+    color: var(--color-primario);
+    font-size: 1.5em;
+    margin-bottom: 12px;
+    border-bottom: 2px solid var(--color-terciario);
+    padding-bottom: 6px;
+}
+section h3 {
+    color: var(--color-secundario);
+    font-size: 1.2em;
+    margin-top: 12px;
+    margin-bottom: 8px;
+}
+
+/* --- FORMULARIOS --- */
+label { 
+    display: block; 
+    margin-top: 12px; 
+    margin-bottom: 4px; 
+    font-weight: 600; 
+}
+input[type="text"], input[type="number"], select {
+    width: 100%; 
+    padding: 14px; 
+    margin-bottom: 12px;
+    border: 1px solid var(--color-borde); 
+    border-radius: 12px; 
+    font-size: 1em;
+    box-sizing: border-box; 
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+input:focus, select:focus {
+    border-color: var(--color-secundario); 
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(16,185,129,0.2);
+}
+
+/* --- BOTONES --- */
+button {
+    background: linear-gradient(135deg, var(--color-secundario), var(--color-terciario));
+    color: white;
+    padding: 14px 20px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 1em;
+    min-height: 48px;
+    transition: all 0.3s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+}
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+}
+
+/* --- LISTAS DE ITEMS --- */
+ul { 
+    list-style: none; 
+    padding: 0; 
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    gap: 12px; 
+    overflow-x: auto;
+}
+ul li {
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    border-radius: 12px;
+    padding: 15px;
+    width: calc(50% - 12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+ul li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+}
+@media(min-width: 600px){
+    ul li { width: 150px; }
+}
+
+.registro-info { width: 100%; }
+.registro-info p { margin: 5px 0; }
+.fecha { font-size: 0.85em; color: #6b7280; font-style: italic; }
+
+/* --- ACCIONES --- */
+.acciones-li {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 8px;
+    width: 100%;
+}
+
+/* --- BOTONES ELIMINAR (GRADIENTE ROJO → AMARILLO) --- */
+.eliminar-btn, .eliminar-cliente-btn, .eliminar-tipo-btn, .eliminar-color-btn {
+    background: linear-gradient(135deg, #ef4444, #facc15); /* rojo → amarillo */
+    color: white;
+    width: 100%;
+    padding: 8px;
+    border-radius: 10px;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.eliminar-btn:hover, .eliminar-cliente-btn:hover, .eliminar-tipo-btn:hover, .eliminar-color-btn:hover {
+    background: linear-gradient(135deg, #f87171, #fde047); /* degradado hover */
+    transform: scale(1.05);
+}
+
+/* --- BOTONES EDITAR --- */
+.editar-cliente-btn, .editar-tipo-btn, .editar-color-btn {
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+    color: white;
+}
+.editar-cliente-btn:hover, .editar-tipo-btn:hover, .editar-color-btn:hover {
+    background: linear-gradient(135deg, var(--color-secundario), var(--color-terciario));
+}
+
+/* --- COLORES GESTIÓN --- */
+.color-rect-peque {
+    width: 35px; 
+    height: 18px; 
+    border-radius: 6px; 
+    margin-bottom:5px;
+}
+.color-nombre { font-weight: 600; margin-bottom: 4px; font-size: 0.9em; }
+
+/* --- SELECCIÓN DE COLORES REGISTRO --- */
+.color-circle-selector {
+    width: 32px; 
+    height: 32px; 
+    border-radius: 50%; 
+    margin: 4px;
+    display: inline-block; 
+    cursor: pointer; 
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+.color-circle-selector.selected {
+    border: 3px solid var(--color-primario);
+    transform: scale(1.2);
+}
+
+/* --- COLOR EN RECIPIENTES --- */
+.color-circle {
+    width: 22px; 
+    height: 22px; 
+    border-radius: 50%;
+    display: inline-block; 
+    margin-left: 5px; 
+    vertical-align: middle;
+    border: 1px solid #555;
+}
