@@ -8,6 +8,7 @@
     --color-texto: #1f2937;
     --color-borde: #e5e7eb;
     --color-atencion: #ef4444; /* rojo base para botones de eliminar */
+    --color-pedido: #8b5cf6; /* Nuevo color para pedidos (púrpura) */
 }
 
 /* --- ESTILOS GENERALES --- */
@@ -83,10 +84,18 @@ section {
     padding: 20px;
     margin-bottom: 20px;
     border-radius: 15px;
-    border-left: 8px solid var(--color-primario);
+    /* Estilo por defecto */
+    border-left: 8px solid var(--color-primario); 
     box-shadow: 0 5px 15px rgba(0,0,0,0.08);
     transition: transform 0.2s, box-shadow 0.2s;
 }
+
+/* NUEVO ESTILO: Diferenciar la sección de Pedidos */
+#registro-pedidos {
+    border-left: 8px solid var(--color-pedido); /* Púrpura para Pedidos */
+}
+
+
 section:hover {
     transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0,0,0,0.12);
@@ -183,6 +192,11 @@ ul li:hover {
     ul li { width: 150px; }
 }
 
+/* Estilo específico para lista de Pedidos de Masas */
+.pedido-masa-item {
+    border: 2px solid var(--color-pedido);
+}
+
 .registro-info { width: 100%; }
 .registro-info p { margin: 5px 0; }
 .fecha { font-size: 0.85em; color: #6b7280; font-style: italic; }
@@ -209,6 +223,15 @@ ul li:hover {
 }
 .eliminar-btn:hover, .eliminar-cliente-btn:hover, .eliminar-tipo-btn:hover, .eliminar-color-btn:hover {
     background: linear-gradient(135deg, #f87171, #fde047); /* degradado hover */
+    transform: scale(1.05);
+}
+
+/* NUEVO ESTILO: Botón de "Preparado" para Pedidos (VERDE → AZUL) */
+.eliminar-pedido-btn {
+    background: linear-gradient(135deg, var(--color-secundario), var(--color-primario));
+}
+.eliminar-pedido-btn:hover {
+    background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
     transform: scale(1.05);
 }
 
