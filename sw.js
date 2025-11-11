@@ -1,13 +1,14 @@
 // sw.js
 
 // 1. Define el nombre de la caché y los archivos esenciales
-const CACHE_NAME = 'recipientes-app-v1.4'; // Importante: Cambia la versión cuando actualices archivos
+// ¡IMPORTANTE! Cambia la versión para forzar la actualización del Service Worker
+const CACHE_NAME = 'recipientes-app-v1.5'; 
 const urlsToCache = [
     '/', // Generalmente para index.html
     'index.html',
     'app.js',
     'styles.css',
-    'manifest.json,
+    'manifest.json', // ¡Añadido para asegurar que el manifiesto se cachee!
     // Asegúrate de incluir cualquier fuente o recurso externo crítico,
     // como los iconos de Material Icons que usas en index.html
     'https://fonts.googleapis.com/icon?family=Material+Icons',
@@ -60,6 +61,13 @@ self.addEventListener('fetch', (event) => {
             return fetch(event.request).catch((error) => {
                 // Aquí podrías servir una página offline por defecto si la solicitud de red falla.
                 console.error('[Service Worker] Fallo en la solicitud de red:', event.request.url, error);
+                
+                // Opcional: Si es una solicitud de HTML (navegación) y falla, puedes redirigir a una página offline
+                /*
+                if (event.request.mode === 'navigate') {
+                    return caches.match('offline.html'); // Requiere que 'offline.html' esté en urlsToCache
+                }
+                */
             });
         })
     );
