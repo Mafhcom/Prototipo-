@@ -1,4 +1,19 @@
+// app.js
+
 document.addEventListener('DOMContentLoaded', () => {
+    // --- REGISTRO DEL SERVICE WORKER para OFFLINE (PWA) ---
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('/sw.js') // El path debe ser la raíz de tu app
+                .then(registration => {
+                    console.log('Service Worker registrado con éxito:', registration.scope);
+                })
+                .catch(err => {
+                    console.error('Fallo en el registro del Service Worker:', err);
+                });
+        });
+    }
+
     // --- DOM ---
     const btnGestion = document.getElementById('btnGestion');
     const btnRegistro = document.getElementById('btnRegistro');
@@ -51,35 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- DATOS INICIALES (MIGRADOS y UNIFICADOS) ---
-    const initialData = {
-        clientes: [
-            "Chela", "Erika", "Zenobia", "Giovana 1", "Norma", "Alina"
-        ],
-        tipos: [
-            "Canastillo pequeño", "Canastillo grande", "Canastillo", "Bandeja", "Bandeja grande"
-        ],
-        colores: [
-            { nombre: "Verde claro", hex: "#90EE90" },
-            { nombre: "Rojo", hex: "#FF0000" },
-            { nombre: "Celeste", hex: "#00BFFF" },
-            { nombre: "Azul", hex: "#0000FF" },
-            { nombre: "Rosado", hex: "#FF69B4" },
-            { nombre: "Negro", hex: "#000000" },
-            { nombre: "Azul oscuro", hex: "#00008B" },
-            { nombre: "Cafe", hex: "#8B4513" },
-            { nombre: "Amarillo", hex: "#FFFF00" },
-            { nombre: "Transparente", hex: "#00000010" },
-            { nombre: "Verde oscuro", hex: "#008000" }
-        ],
-        recipientes: [
-            { id: "1761700004101", cliente: "Chela", tipo: "Canastillo pequeño", color: "Verde claro", valorColor: "#90EE90", fecha: "2025-10-29" },
-            { id: "1761700357689", cliente: "Erika", tipo: "Bandeja grande", color: "Rosado", valorColor: "#FF69B4", fecha: "2025-10-29" },
-            { id: "1761700367788", cliente: "Giovana 1", tipo: "Canastillo pequeño", color: "Azul", valorColor: "#0000FF", fecha: "2025-10-29" },
-            { id: "1761734910068", cliente: "Erika", tipo: "Bandeja grande", color: "Rosado", valorColor: "#FF69B4", fecha: "2025-10-29" },
-            { id: "1761734929869", cliente: "Chela", tipo: "Canastillo pequeño", color: "Verde claro", valorColor: "#90EE90", fecha: "2025-10-29" },
-            { id: "1761734944916", cliente: "Zenobia", tipo: "Canastillo pequeño", color: "Amarillo", valorColor: "#FFFF00", fecha: "2025-10-29" }
-        ]
-    };
+    // SECCIÓN DE DATOS INICIALES (initialData) ELIMINADA.
 
     /**
      * Función que carga los datos iniciales si LocalStorage está vacío
@@ -123,24 +110,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         // --- Carga de datos iniciales (Si LocalStorage sigue vacío) ---
+        // LÓGICA DE CARGA DE DATOS PREDETERMINADOS ELIMINADA.
         if (storage.getClientes().length === 0 && !migrated) {
-            console.log('[INICIO] LocalStorage vacío. Cargando datos predeterminados.');
-            
-            // Convertir los arrays simples de initialData a objetos con ID
-            const clientesWithId = initialData.clientes.map((nombre, index) => ({ nombre, id: 1000 + index }));
-            const tiposWithId = initialData.tipos.map((nombre, index) => ({ nombre, id: 2000 + index }));
-            const coloresWithId = initialData.colores.map((color, index) => ({ 
-                nombre: color.nombre, 
-                hex: color.hex, 
-                id: 3000 + index 
-            }));
-
-            storage.saveClientes(clientesWithId);
-            storage.saveTipos(tiposWithId);
-            storage.saveColores(coloresWithId);
-            storage.saveRecipientes(initialData.recipientes);
-
-            alert('Datos iniciales cargados automáticamente ✅. ¡Comience a usar la aplicación!');
+            console.log('[INICIO] LocalStorage vacío. No se cargaron datos predeterminados.');
+            // Opcional: Mostrar un mensaje diferente al usuario si el localStorage está vacío al inicio.
+            // alert('No hay datos. Comience agregando Clientes, Tipos y Colores en la pestaña "Gestión"'); 
         }
     }
 
@@ -638,4 +612,3 @@ document.addEventListener('DOMContentLoaded', () => {
     renderColores();
     switchVista('vistaGestion'); 
 });
-
