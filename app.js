@@ -4,9 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- REGISTRO DEL SERVICE WORKER para OFFLINE (PWA) ---
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            // CORRECCIÓN CRUCIAL PARA AMBIENTES COMO GITHUB PAGES:
-            // Se cambió de '/sw.js' (ruta absoluta que fallaba) a './sw.js' (ruta relativa).
-            navigator.serviceWorker.register('./sw.js') 
+            navigator.serviceWorker.register('/sw.js') // El path debe ser la raíz de tu app
                 .then(registration => {
                     console.log('Service Worker registrado con éxito:', registration.scope);
                 })
@@ -29,6 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const colorForm = document.getElementById('colorForm');
     const listaColores = document.getElementById('listaColores');
 
+    // NUEVOS ELEMENTOS DEL DOM PARA PEDIDO DE MASAS
+    const pedidoMasaForm = document.getElementById('pedidoMasaForm');
+    const clientePedidoSelect = document.getElementById('clientePedidoSelect');
+    const listaPedidosMasas = document.getElementById('listaPedidosMasas');
+    const fechaMananaSpan = document.getElementById('fechaManana'); // NUEVO SPAN
+
     const registroForm = document.getElementById('registroForm');
     const clienteSelect = document.getElementById('clienteSelect');
     const tipoRecipienteSelect = document.getElementById('tipoRecipienteSelect');
@@ -48,6 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const todayISO = today.toISOString().split('T')[0];
     fechaActualSpan.textContent = today.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
+    // FECHA DE MAÑANA
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
+    const tomorrowISO = tomorrow.toISOString().split('T')[0];
+    fechaMananaSpan.textContent = tomorrow.toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' });
+
+
     // --- Storage Handler (Utilizando las CLAVES ORIGINALES del usuario) ---
     const storage = {
         get(key) {
@@ -65,9 +76,10 @@ document.addEventListener('DOMContentLoaded', () => {
         saveColores: (data) => storage.save('coloresRegistrados', data),
         getRecipientes: () => storage.get('registrosRecipientes'),
         saveRecipientes: (data) => storage.save('registrosRecipientes', data),
+        // NUEVA CLAVE PARA PEDIDOS DE MASAS
+        getPedidosMasas: () => storage.get('pedidosMasas'),
+        savePedidosMasas: (data) => storage.save('pedidosMasas', data),
     };
-
-    // SECCIÓN DE DATOS INICIALES (initialData) ELIMINADA.
 
     /**
      * Función que carga los datos iniciales si LocalStorage está vacío
@@ -138,6 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (vistaId === 'vistaRegistro') {
             renderSelectores();
             renderRecipientes();
+            renderPedidosMasas(); // RENDERIZAR PEDIDOS AL CAMBIAR DE VISTA
         }
     }
 
@@ -372,13 +385,17 @@ document.addEventListener('DOMContentLoaded', () => {
         const colores = storage.getColores().sort((a, b) => a.nombre.localeCompare(b.nombre, 'es', { sensitivity: 'base' }));
 
 
-        // 1. Selector de Clientes
-        clienteSelect.innerHTML = '<option value="" disabled selected>-- Seleccione un Cliente --</option>';
-        clientes.forEach(cliente => {
-            const option = document.createElement('option');
-            option.value = cliente.id;
-            option.textContent = cliente.nombre;
-            clienteSelect.appendChild(option);
+        // 1. Selectores de Clientes (Recipientes y Pedidos)
+        const selectoresClientes = [clienteSelect, clientePedidoSelect]; // Añadir el nuevo selector
+        
+        selectoresClientes.forEach(selectElement => {
+            selectElement.innerHTML = '<option value="" disabled selected>-- Seleccione un Cliente --</option>';
+            clientes.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.id;
+                option.textContent = cliente.nombre;
+                selectElement.appendChild(option);
+            });
         });
 
         // 2. Selector de Tipos
@@ -491,6 +508,78 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // --- FUNCIONALIDAD DE PEDIDOS DE MASAS ------------------
+
+    pedidoMasaForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const clienteId = clientePedidoSelect.value;
+        const detalle = document.getElementById('detallePedido').value.trim();
+
+        if (!clienteId || !detalle) {
+            alert('Por favor, complete el Cliente y el Detalle del Pedido.');
+            return;
+        }
+
+        const clientes = storage.getClientes();
+        const cliente = clientes.find(c => c.id == clienteId);
+
+        const nuevoPedido = {
+            id: Date.now().toString(),
+            cliente: cliente ? cliente.nombre : 'Cliente Desconocido',
+            detalle: detalle,
+            fecha: tomorrowISO
+        };
+
+        let pedidos = storage.getPedidosMasas();
+        pedidos.push(nuevoPedido);
+        storage.savePedidosMasas(pedidos);
+
+        alert(`Pedido de masas para ${nuevoPedido.cliente} registrado para mañana.`);
+        pedidoMasaForm.reset();
+        renderPedidosMasas();
+        preguntarBackup();
+    });
+
+    function renderPedidosMasas() {
+        const pedidos = storage.getPedidosMasas();
+        listaPedidosMasas.innerHTML = '';
+
+        if (pedidos.length === 0) {
+            listaPedidosMasas.innerHTML = '<p class="info-msg">No hay pedidos de masas pendientes para mañana.</p>';
+            return;
+        }
+
+        pedidos.forEach((p) => {
+            const li = document.createElement('li');
+            li.className = 'pedido-masa-item';
+            
+            li.innerHTML = `
+                <div class="registro-info">
+                    <p><strong>Cliente:</strong> ${p.cliente}</p>
+                    <p><strong>Detalle:</strong> ${p.detalle}</p>
+                    <p class="fecha">Fecha de entrega: ${new Date(p.fecha + 'T00:00:00').toLocaleDateString('es-ES', { year: 'numeric', month: '2-digit', day: '2-digit' })}</p>
+                </div>
+                <button class="eliminar-pedido-btn" data-id="${p.id}">☑️ Preparado (Eliminar)</button>
+            `;
+            listaPedidosMasas.appendChild(li);
+        });
+    }
+
+    listaPedidosMasas.addEventListener('click', (e) => {
+        if (e.target.classList.contains('eliminar-pedido-btn')) {
+            const id = e.target.dataset.id;
+             if (confirm('Marcar este pedido como preparado/entregado y eliminar el registro?')) {
+                let pedidos = storage.getPedidosMasas();
+                pedidos = pedidos.filter(p => p.id !== id);
+                storage.savePedidosMasas(pedidos);
+                renderPedidosMasas();
+                preguntarBackup();
+            }
+        }
+    });
+
+
     // --- FUNCIONALIDAD DE BACKUP -----------------------------
     
     function cargarDatos(data) {
@@ -499,12 +588,16 @@ document.addEventListener('DOMContentLoaded', () => {
         storage.saveTipos(data.tipos || []);
         storage.saveColores(data.colores || []);
         storage.saveRecipientes(data.recipientes || []);
+        // CARGAR NUEVOS DATOS DE PEDIDOS
+        storage.savePedidosMasas(data.pedidosMasas || data.pedidos || []); // Soporte para clave antigua/nueva
+        
 
         renderClientes();
         renderTipos();
         renderColores();
         renderSelectores();
         renderRecipientes();
+        renderPedidosMasas(); // RENDERIZAR NUEVOS DATOS
 
         alert('Datos restaurados ✅');
     }
@@ -523,9 +616,10 @@ document.addEventListener('DOMContentLoaded', () => {
             tipos: storage.getTipos(),
             colores: storage.getColores(),
             recipientes: storage.getRecipientes(),
+            pedidosMasas: storage.getPedidosMasas(), // AÑADIR NUEVOS DATOS
             metadata: {
                 fecha: new Date().toISOString(),
-                version: '1.4' // Nueva versión
+                version: '1.4' // Se mantiene la versión pero la estructura es nueva
             }
         };
 
@@ -568,7 +662,7 @@ document.addEventListener('DOMContentLoaded', () => {
             reader.onload = function(event) {
                 try {
                     const data = JSON.parse(event.target.result);
-                    // Verificación de claves originales
+                    // Verificación de claves originales + nueva clave (pedidosMasas o pedidos para compatibilidad)
                     if(data.clientes && data.tipos && data.colores) {
                          if(confirm('Restaurar desde ARCHIVO: Esta acción reemplazará los datos actuales. ¿Desea continuar?')) {
                             cargarDatos(data);
