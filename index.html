@@ -72,6 +72,29 @@
         </div>
 
         <div id="vistaRegistro" class="vista-content">
+            <section id="registro-pedidos">
+                <h2><span class="material-icons">cake</span> 🍞 Pedido de Masas para Mañana</h2>
+                <form id="pedidoMasaForm">
+                    <label for="clientePedidoSelect">Seleccione Cliente:</label>
+                    <select id="clientePedidoSelect" required>
+                        <option value="" disabled selected>-- Seleccione un Cliente --</option>
+                    </select>
+
+                    <label for="detallePedido">Detalle del Pedido:</label>
+                    <input type="text" id="detallePedido" placeholder="Ej: 1kg pan, 12 facturas, 1 torta" required>
+
+                    <p><strong>Fecha de Pedido:</strong> Mañana (<span id="fechaManana"></span>)</p>
+                    <button type="submit">Registrar Pedido</button>
+                </form>
+
+                <hr>
+
+                <h3><span class="material-icons">format_list_bulleted</span> Pedidos Pendientes</h3>
+                <ul id="listaPedidosMasas"></ul>
+            </section>
+
+            <hr>
+
             <section id="registro-form">
                 <h2><span class="material-icons">playlist_add</span> Registrar Nuevo Recipiente</h2>
                 <form id="registroForm">
