@@ -4,7 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- REGISTRO DEL SERVICE WORKER para OFFLINE (PWA) ---
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', () => {
-            // RUTA CORREGIDA: Se cambió de '/sw.js' a './sw.js' para funcionar correctamente en GitHub Pages.
+            // CORRECCIÓN CRUCIAL PARA AMBIENTES COMO GITHUB PAGES:
+            // Se cambió de '/sw.js' (ruta absoluta que fallaba) a './sw.js' (ruta relativa).
             navigator.serviceWorker.register('./sw.js') 
                 .then(registration => {
                     console.log('Service Worker registrado con éxito:', registration.scope);
@@ -66,7 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
         saveRecipientes: (data) => storage.save('registrosRecipientes', data),
     };
 
-    // --- DATOS INICIALES (MIGRADOS y UNIFICADOS) ---
     // SECCIÓN DE DATOS INICIALES (initialData) ELIMINADA.
 
     /**
