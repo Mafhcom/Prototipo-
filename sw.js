@@ -7,6 +7,7 @@ const urlsToCache = [
     'index.html',
     'app.js',
     'styles.css',
+    'manifest.json,
     // Asegúrate de incluir cualquier fuente o recurso externo crítico,
     // como los iconos de Material Icons que usas en index.html
     'https://fonts.googleapis.com/icon?family=Material+Icons',
