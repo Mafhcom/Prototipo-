@@ -1,12 +1,34 @@
 {
   "name": "Gestión de Recipientes",
   "short_name": "Recipientes",
-  "description": "Aplicación para gestionar la entrega y devolución de recipientes.",
+  "description": "Aplicación para gestionar la entrega y devolución de recipientes y pedidos de masas.",
   "start_url": "/index.html",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#f9fafb",
   "theme_color": "#3b82f6",
+  "status_bar_color": "#3b82f6",  
   "icons": [
+    {
+      "src": "icon-72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-128.png",
+      "sizes": "128x128",
+      "type": "image/png"
+    },
+    {
+      "src": "icon-144.png",
+      "sizes": "144x144",
+      "type": "image/png"
+    },
     {
       "src": "icon-192.png",
       "sizes": "192x192",
@@ -15,7 +37,8 @@
     {
       "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
